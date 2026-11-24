@@ -2,14 +2,15 @@
   "name": "career-match",
   "private": true,
   "type": "module",
+  "main": "app.js",
   "engines": {
     "node": "22.x"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "start": "tsx index.ts",
+    "start": "tsx scripts/chat.ts",
     "demo": "tsx demo.ts",
-    "server": "tsx server.ts",
+    "server": "tsx scripts/serve.ts",
     "eval": "tsx eval.ts",
     "test": "tsx --test tests.test.ts",
     "typecheck": "tsc --noEmit"

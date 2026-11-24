@@ -5,6 +5,6 @@
     "rootDir": ".",
     "noEmit": false
   },
-  "include": ["*.ts"],
-  "exclude": ["index.ts", "demo.ts", "eval.ts", "tests.test.ts", "api/**"]
+  "include": ["*.ts", "lib/*.ts", "scripts/*.ts"],
+  "exclude": ["demo.ts", "eval.ts", "tests.test.ts", "api/**"]
 }

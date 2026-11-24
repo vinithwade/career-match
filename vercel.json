@@ -1,18 +1,3 @@
 {
-  "buildCommand": "npm run build",
-  "functions": {
-    "api/index.js": {
-      "maxDuration": 60
-    }
-  },
-  "rewrites": [
-    { "source": "/health", "destination": "/api/index" },
-    { "source": "/jobs", "destination": "/api/index" },
-    { "source": "/job", "destination": "/api/index" },
-    { "source": "/profile", "destination": "/api/index" },
-    { "source": "/history", "destination": "/api/index" },
-    { "source": "/session/clear", "destination": "/api/index" },
-    { "source": "/agent", "destination": "/api/index" },
-    { "source": "/index", "destination": "/api/index" }
-  ]
+  "buildCommand": "npm run build"
 }

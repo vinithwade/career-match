@@ -1,4 +1,4 @@
-import { runAgent } from "./agent.js";
+import { runAgent } from "../agent.js";
 
 const prompt =
   process.argv.slice(2).join(" ").trim() ||

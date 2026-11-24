@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { runAgent } from "./agent.js";
+import { runAgent } from "../agent.js";
 import {
   clearMessages,
   jobCount,
@@ -11,13 +11,16 @@ import {
   loadProfile,
   saveProfile,
   type Profile,
-} from "./db.js";
-import { ensureIndex, getJobDetails, semanticSearch } from "./jobs.js";
+} from "../db.js";
+import { ensureIndex, getJobDetails, semanticSearch } from "../jobs.js";
 
 const moduleDir = fileURLToPath(new URL(".", import.meta.url));
-const localPublicDir = join(moduleDir, "public");
-const bundledPublicDir = join(moduleDir, "..", "public");
-const PUBLIC_DIR = existsSync(join(localPublicDir, "index.html")) ? localPublicDir : bundledPublicDir;
+const publicDirCandidates = [
+  join(moduleDir, "public"),
+  join(moduleDir, "..", "public"),
+  join(moduleDir, "..", "..", "public"),
+];
+const PUBLIC_DIR = publicDirCandidates.find((dir) => existsSync(join(dir, "index.html"))) ?? publicDirCandidates[0];
 
 const STATIC_FILES: Record<string, { file: string; type: string }> = {
   "/": { file: "index.html", type: "text/html; charset=utf-8" },
