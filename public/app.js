@@ -237,38 +237,69 @@ const createMatchCard = (job, index = 0) => {
     tags.append(tag);
   }
 
-  let apply;
+  const actions = document.createElement("div");
+  actions.className = "match-actions";
+
   if (job.applyUrl) {
-    apply = document.createElement("a");
+    const apply = document.createElement("a");
     apply.className = "match-apply";
     apply.href = job.applyUrl;
     apply.target = "_blank";
     apply.rel = "noopener noreferrer";
     apply.textContent = "Apply / find role ↗";
+    actions.append(apply);
   }
 
   const toggle = document.createElement("button");
   toggle.type = "button";
   toggle.className = "match-toggle";
   toggle.textContent = "Why this match?";
+  toggle.setAttribute("aria-expanded", "false");
+  actions.append(toggle);
 
-  const details = document.createElement("p");
-  details.className = "match-details";
-  details.hidden = true;
-  details.textContent = [
-    job.description,
-    `Matched skills: ${(job.matchedSkills ?? []).join(", ") || "none yet"}`,
-    `Missing skills: ${(job.missingSkills ?? []).join(", ") || "none"}`,
-  ].join("\n\n");
+  const detailsPanel = document.createElement("div");
+  detailsPanel.className = "match-details-panel";
+  detailsPanel.hidden = true;
+  detailsPanel.id = `match-details-${String(job.id ?? index).replace(/[^a-zA-Z0-9_-]/g, "")}`;
+  toggle.setAttribute("aria-controls", detailsPanel.id);
+
+  const detailsLabel = document.createElement("span");
+  detailsLabel.className = "match-details-label";
+  detailsLabel.textContent = "Why this fits";
+
+  const detailsGrid = document.createElement("div");
+  detailsGrid.className = "match-details-grid";
+
+  const addDetail = (label, value, kind = "") => {
+    const row = document.createElement("div");
+    row.className = "match-detail-row";
+
+    const name = document.createElement("span");
+    name.className = "match-detail-label";
+    name.textContent = label;
+
+    const text = document.createElement("span");
+    text.className = `match-detail-value${kind ? ` ${kind}` : ""}`;
+    text.textContent = value;
+
+    row.append(name, text);
+    detailsGrid.append(row);
+  };
+
+  addDetail("Matched", (job.matchedSkills ?? []).join(", ") || "none yet");
+  addDetail("Gaps", (job.missingSkills ?? []).join(", ") || "none");
+  if (job.description) addDetail("Role brief", job.description, "description");
+
+  detailsPanel.append(detailsLabel, detailsGrid);
 
   toggle.addEventListener("click", () => {
-    details.hidden = !details.hidden;
-    toggle.textContent = details.hidden ? "Why this match?" : "Hide details";
+    const open = detailsPanel.hidden;
+    detailsPanel.hidden = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.textContent = open ? "Hide details" : "Why this match?";
   });
 
-  card.append(head, meta, tags);
-  if (apply) card.append(apply);
-  card.append(toggle, details);
+  card.append(head, meta, tags, actions, detailsPanel);
   return card;
 };
 

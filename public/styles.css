@@ -748,11 +748,19 @@ textarea:focus-visible {
   color: var(--muted);
 }
 
+.match-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 13px;
+}
+
 .match-apply {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 12px;
   padding: 7px 11px;
   border-radius: var(--md-sys-shape-corner-full);
   background: rgba(182, 222, 209, 0.14);
@@ -774,27 +782,102 @@ textarea:focus-visible {
 }
 
 .match-toggle {
-  display: inline-block;
-  margin-top: 12px;
-  margin-left: 4px;
-  padding: 6px 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 2px;
   border: 0;
   background: none;
   color: var(--accent);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 750;
+}
+
+.match-toggle::before {
+  content: "expand_more";
+  font-family: "Material Symbols Rounded";
+  font-size: 15px;
+  transition: transform 240ms var(--md-sys-motion-easing-emphasized);
+}
+
+.match-toggle[aria-expanded="true"]::before {
+  transform: rotate(180deg);
 }
 
 .match-toggle:hover {
   text-decoration: underline;
 }
 
-.match-details {
-  margin: 9px 0 0;
+.match-details-panel {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(198, 200, 255, 0.14);
+  border-radius: var(--md-sys-shape-corner-medium);
+  background: rgba(9, 13, 28, 0.66);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  animation: details-in 300ms var(--md-sys-motion-easing-emphasized) both;
+}
+
+.match-details-panel[hidden] {
+  display: none;
+}
+
+@keyframes details-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.match-details-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--success);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.match-details-label::before {
+  content: "psychology";
+  font-family: "Material Symbols Rounded";
+  font-size: 16px;
+}
+
+.match-details-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 10px;
+}
+
+.match-detail-row {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 9px;
+}
+
+.match-detail-label {
   color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.match-detail-value {
+  color: var(--text);
   font-size: 11px;
-  line-height: 1.55;
-  white-space: pre-wrap;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.match-detail-value.description {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--muted);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
 }
 
 .trace-block {
