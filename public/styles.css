@@ -296,9 +296,15 @@ button {
 }
 
 .discover-section {
-  flex: none;
-  padding: 14px 20px 0;
-  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  padding: 14px 20px 20px;
+}
+
+.discover-section[hidden] {
+  display: none;
 }
 
 .discover-head {
@@ -326,9 +332,11 @@ button {
 
 .matches-list {
   display: grid;
+  flex: 1;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-content: start;
   gap: 10px;
-  max-height: 300px;
+  min-height: 0;
   overflow-y: auto;
   padding-right: 4px;
 }
