@@ -3,15 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
     <title>Career Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <div class="app-shell">
       <aside class="sidebar">
         <div class="brand">
-          <div class="brand-mark">EA</div>
+          <div class="brand-mark"><span class="material-symbols-rounded" aria-hidden="true">auto_awesome</span></div>
           <div>
+            <span class="eyebrow">Agent workspace</span>
             <h1>Career Agent</h1>
             <p>Find roles that fit you</p>
           </div>
@@ -19,7 +27,10 @@
 
         <section class="panel">
           <div class="panel-head">
-            <h2>Your profile</h2>
+            <div class="panel-title">
+              <span class="material-symbols-rounded panel-icon" aria-hidden="true">person</span>
+              <h2>Your profile</h2>
+            </div>
             <span class="pill" id="profile-status">Not saved</span>
           </div>
           <p class="panel-copy">Add a few details. We rank jobs by meaning and skill overlap, then you can ask follow-ups.</p>
@@ -30,26 +41,41 @@
             <label>Location<input name="location" placeholder="Bengaluru" /></label>
             <label class="check"><input type="checkbox" name="remoteOnly" /> Remote only</label>
             <label>Summary<textarea name="summary" rows="3" placeholder="Short background, projects or goals"></textarea></label>
-            <button type="submit" class="primary" id="save-profile">Save & find matches</button>
+            <button type="submit" class="primary" id="save-profile">
+              <span class="material-symbols-rounded" aria-hidden="true">auto_awesome</span>
+              <span>Save & find matches</span>
+            </button>
           </form>
           <p class="form-message" id="profile-message" role="status"></p>
         </section>
 
         <section class="panel">
-          <div class="panel-head"><h2>Session</h2></div>
+          <div class="panel-head">
+            <div class="panel-title">
+              <span class="material-symbols-rounded panel-icon" aria-hidden="true">history</span>
+              <h2>Session</h2>
+            </div>
+          </div>
           <label>Conversation ID<input id="session-id" value="web" /></label>
-          <button id="clear-chat" class="ghost">Clear chat</button>
+          <button id="clear-chat" class="ghost">
+            <span class="material-symbols-rounded" aria-hidden="true">delete_sweep</span>
+            <span>Clear chat</span>
+          </button>
         </section>
       </aside>
 
       <main class="main">
         <header class="topbar">
           <div>
-            <h2>Career copilot</h2>
+            <span class="eyebrow">Career intelligence</span>
+            <h2>Your next role,<br /><em>already ranked.</em></h2>
             <p>Your openings, ranked for your profile.</p>
           </div>
           <div class="topbar-actions">
-            <button id="edit-profile" class="ghost small">Edit profile</button>
+            <button id="edit-profile" class="ghost small">
+              <span class="material-symbols-rounded" aria-hidden="true">edit</span>
+              <span>Edit profile</span>
+            </button>
             <div class="status" id="status"><span class="dot"></span><span id="status-text">Ready</span></div>
           </div>
         </header>
@@ -57,12 +83,19 @@
         <section class="discover-section" id="discover-section" hidden>
           <div class="discover-head">
             <div>
+              <span class="section-kicker">
+                <span class="material-symbols-rounded" aria-hidden="true">tune</span>
+                Curated for you
+              </span>
               <h3>Best matches for you</h3>
               <p class="muted" id="matches-summary"></p>
             </div>
             <div class="discover-actions">
               <span class="pill" id="matches-count"></span>
-              <button id="refresh-matches" class="ghost small">Refresh</button>
+              <button id="refresh-matches" class="ghost small">
+                <span class="material-symbols-rounded" aria-hidden="true">refresh</span>
+                <span>Refresh</span>
+              </button>
             </div>
           </div>
           <div id="matches-list" class="matches-list"></div>
@@ -72,7 +105,10 @@
       <aside class="trace-panel">
         <section class="trace-block">
           <div class="panel-head">
-            <h2>Agent activity</h2>
+            <div class="panel-title">
+              <span class="material-symbols-rounded panel-icon" aria-hidden="true">bolt</span>
+              <h2>Agent activity</h2>
+            </div>
             <span class="pill" id="turn-count">0 turns</span>
           </div>
           <div id="trace-list" class="trace-list">
@@ -82,7 +118,10 @@
 
         <section class="chat-block">
           <div class="chat-head">
-            <h3>Chat</h3>
+            <div class="panel-title">
+              <span class="material-symbols-rounded panel-icon" aria-hidden="true">forum</span>
+              <h3>Chat</h3>
+            </div>
             <span class="muted">Ask follow-ups about your matches</span>
           </div>
 
@@ -95,14 +134,17 @@
 
           <div class="chat" id="chat" aria-live="polite">
             <div class="empty" id="empty-state">
-              <h3>Ready when you are</h3>
-              <p>Save your profile to see ranked roles above, then ask the agent anything about your search.</p>
+              <h3>Your next move starts here</h3>
+              <p>Save your profile to see ranked roles, then ask the agent anything about your search.</p>
             </div>
           </div>
 
           <form class="composer" id="chat-form">
             <textarea id="prompt" rows="2" placeholder="Ask the agent anything about your job search..."></textarea>
-            <button type="submit" id="send" class="primary">Send</button>
+            <button type="submit" id="send" class="primary">
+              <span class="material-symbols-rounded" aria-hidden="true">send</span>
+              <span>Send</span>
+            </button>
           </form>
           <p class="hint center">Enter to send · Shift + Enter for a new line</p>
         </section>
@@ -111,7 +153,11 @@
 
     <div class="onboarding" id="onboarding">
       <div class="onboarding-card">
-        <div class="onboarding-badge">Start here</div>
+        <div class="onboarding-glow" aria-hidden="true"></div>
+        <div class="onboarding-badge">
+          <span class="material-symbols-rounded" aria-hidden="true">auto_awesome</span>
+          Start here
+        </div>
         <h2>What opening are you looking for?</h2>
         <p class="onboarding-copy">Tell us your target role and skills. We will rank the best openings for you.</p>
         <form id="onboarding-form">
@@ -119,7 +165,10 @@
           <label>Skills<span class="hint">comma separated</span><input name="skills" placeholder="LLMs, Python, SQL, embeddings" required /></label>
           <label>Preferred location<span class="hint">city, state or country</span><input name="location" placeholder="Bengaluru / India / Remote" /></label>
           <label class="check"><input type="checkbox" name="remoteOnly" /> Remote only</label>
-          <button type="submit" class="primary" id="onboarding-submit">Show my openings</button>
+          <button type="submit" class="primary" id="onboarding-submit">
+            <span class="material-symbols-rounded" aria-hidden="true">rocket_launch</span>
+            <span>Show my openings</span>
+          </button>
         </form>
         <p class="form-message" id="onboarding-error" role="status"></p>
       </div>

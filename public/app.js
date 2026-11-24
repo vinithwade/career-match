@@ -110,8 +110,8 @@ const addMessage = (role, content, links = []) => {
 const showEmptyState = () => {
   chat.innerHTML = `
     <div class="empty" id="empty-state">
-      <h3>Ready when you are</h3>
-      <p>Save your profile to see ranked roles above, then ask the agent anything about your search.</p>
+      <h3>Your next move starts here</h3>
+      <p>Save your profile to see ranked roles, then ask the agent anything about your search.</p>
     </div>`;
 };
 
@@ -191,9 +191,10 @@ const loadProfile = async () => {
   return data.profile;
 };
 
-const createMatchCard = (job) => {
+const createMatchCard = (job, index = 0) => {
   const card = document.createElement("article");
   card.className = "match-card";
+  card.style.setProperty("--i", String(index));
 
   const head = document.createElement("div");
   head.className = "match-card-head";
@@ -207,9 +208,13 @@ const createMatchCard = (job) => {
   company.textContent = job.company;
   titleWrap.append(title, company);
 
+  const scoreValue = Math.round((job.matchScore ?? 0) * 100);
   const score = document.createElement("span");
   score.className = "match-score";
-  score.textContent = `${Math.round((job.matchScore ?? 0) * 100)}% match`;
+  score.textContent = `${scoreValue}%`;
+  score.title = `${scoreValue}% match`;
+  score.setAttribute("aria-label", `${scoreValue}% match`);
+  card.style.setProperty("--score", `${Math.max(0, Math.min(scoreValue, 100))}%`);
 
   head.append(titleWrap, score);
 
@@ -280,9 +285,9 @@ const renderMatchCards = () => {
     return;
   }
 
-  for (const job of currentMatches) {
-    matchesList.append(createMatchCard(job));
-  }
+  currentMatches.forEach((job, index) => {
+    matchesList.append(createMatchCard(job, index));
+  });
 };
 
 const renderMatches = (data) => {
