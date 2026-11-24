@@ -26,7 +26,7 @@ export interface AgentResult {
 
 const config: GenerateContentConfig = {
   systemInstruction:
-    "You are Elip's AI career agent. Use save_profile when the user shares their background or preferences. " +
+    "You are a career agent. Use save_profile when the user shares their background or preferences. " +
     "When the user asks which jobs fit them or asks for recommendations, always call match_jobs; do not answer from get_profile alone. " +
     "Use search_jobs for exploratory queries that are not tied to a saved profile, and get_profile only when asked about the profile itself. " +
     "Use get_job for details, and get_weather or bash only when explicitly relevant. " +
