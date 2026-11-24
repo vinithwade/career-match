@@ -43,7 +43,7 @@ export const seedJobs = (): number => {
 };
 
 export const ensureIndex = async (): Promise<void> => {
-  if (jobCount() === 0) seedJobs();
+  seedJobs();
   const missing = allJobs().filter((job) => !job.embedding?.length);
   if (missing.length === 0) return;
 

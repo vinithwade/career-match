@@ -12,6 +12,7 @@ export interface Job {
   skills: string[];
   description: string;
   postedAt: string;
+  applyUrl?: string;
   embedding?: number[];
 }
 
@@ -40,6 +41,7 @@ interface JobRow {
   skills: string;
   description: string;
   posted_at: string;
+  apply_url: string | null;
   embedding: string | null;
 }
 
@@ -66,6 +68,7 @@ db.exec(`
     skills TEXT NOT NULL,
     description TEXT NOT NULL,
     posted_at TEXT NOT NULL,
+    apply_url TEXT,
     embedding TEXT
   );
   CREATE TABLE IF NOT EXISTS profiles (
@@ -83,6 +86,11 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS messages_session_idx ON messages(session_id, id);
 `);
 
+const jobColumns = db.prepare("PRAGMA table_info(jobs)").all() as { name: string }[];
+if (!jobColumns.some((column) => column.name === "apply_url")) {
+  db.exec("ALTER TABLE jobs ADD COLUMN apply_url TEXT");
+}
+
 const toJob = (row: JobRow): Job => ({
   id: row.id,
   title: row.title,
@@ -94,13 +102,14 @@ const toJob = (row: JobRow): Job => ({
   skills: JSON.parse(row.skills) as string[],
   description: row.description,
   postedAt: row.posted_at,
+  applyUrl: row.apply_url ?? undefined,
   embedding: row.embedding ? (JSON.parse(row.embedding) as number[]) : undefined,
 });
 
 export const upsertJob = (job: Job): void => {
   db.prepare(`
-    INSERT INTO jobs (id, title, company, location, mode, employment_type, pay, skills, description, posted_at, embedding)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO jobs (id, title, company, location, mode, employment_type, pay, skills, description, posted_at, apply_url, embedding)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
       title = excluded.title,
       company = excluded.company,
@@ -110,7 +119,8 @@ export const upsertJob = (job: Job): void => {
       pay = excluded.pay,
       skills = excluded.skills,
       description = excluded.description,
-      posted_at = excluded.posted_at
+      posted_at = excluded.posted_at,
+      apply_url = excluded.apply_url
   `).run(
     job.id,
     job.title,
@@ -122,6 +132,7 @@ export const upsertJob = (job: Job): void => {
     JSON.stringify(job.skills),
     job.description,
     job.postedAt,
+    job.applyUrl ?? null,
     job.embedding ? JSON.stringify(job.embedding) : null,
   );
 };

@@ -244,7 +244,7 @@ export const tools: Record<string, Tool> = {
     declaration: {
       name: "match_jobs",
       description:
-        "Rank jobs for the saved profile using semantic similarity plus skill overlap. Use for 'recommend jobs for me' requests.",
+        "Rank jobs for the saved profile using semantic similarity plus skill overlap. Results include applyUrl links for applying. Use for 'recommend jobs for me' requests.",
       parameters: {
         type: Type.OBJECT,
         properties: {

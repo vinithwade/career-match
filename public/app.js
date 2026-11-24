@@ -45,11 +45,32 @@ const removeEmptyState = () => {
   $("empty-state")?.remove();
 };
 
+const appendLinkedText = (element, text) => {
+  const pattern = /https?:\/\/[^\s<>]+/g;
+  let lastIndex = 0;
+
+  for (const match of text.matchAll(pattern)) {
+    const index = match.index ?? 0;
+    if (index > lastIndex) element.append(document.createTextNode(text.slice(lastIndex, index)));
+
+    const link = document.createElement("a");
+    link.href = match[0].replace(/[.,;:)\]]+$/, "");
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.className = "message-link";
+    link.textContent = "Apply / open link";
+    element.append(link);
+    lastIndex = index + match[0].length;
+  }
+
+  if (lastIndex < text.length) element.append(document.createTextNode(text.slice(lastIndex)));
+};
+
 const addMessage = (role, content) => {
   removeEmptyState();
   const message = document.createElement("div");
   message.className = `message ${role}`;
-  message.textContent = content;
+  appendLinkedText(message, content);
   chat.append(message);
   scrollToBottom();
 };
@@ -179,6 +200,16 @@ const createMatchCard = (job) => {
     tags.append(tag);
   }
 
+  let apply;
+  if (job.applyUrl) {
+    apply = document.createElement("a");
+    apply.className = "match-apply";
+    apply.href = job.applyUrl;
+    apply.target = "_blank";
+    apply.rel = "noopener noreferrer";
+    apply.textContent = "Apply / find role ↗";
+  }
+
   const toggle = document.createElement("button");
   toggle.type = "button";
   toggle.className = "match-toggle";
@@ -198,7 +229,9 @@ const createMatchCard = (job) => {
     toggle.textContent = details.hidden ? "Why this match?" : "Hide details";
   });
 
-  card.append(head, meta, tags, toggle, details);
+  card.append(head, meta, tags);
+  if (apply) card.append(apply);
+  card.append(toggle, details);
   return card;
 };
 

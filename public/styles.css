@@ -376,6 +376,22 @@ button {
   color: var(--muted);
 }
 
+.match-apply {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 9px;
+  border-radius: 8px;
+  background: rgba(63, 214, 174, 0.14);
+  color: var(--success);
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.match-apply:hover {
+  filter: brightness(1.2);
+}
+
 .match-toggle {
   margin-top: 10px;
   padding: 0;
@@ -466,6 +482,22 @@ button {
 
 .message.typing {
   color: var(--muted);
+}
+
+.message-link {
+  display: inline-block;
+  margin: 4px 0;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(63, 214, 174, 0.14);
+  color: var(--success);
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.message-link:hover {
+  text-decoration: underline;
 }
 
 .composer {

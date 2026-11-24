@@ -21,6 +21,7 @@ test("seeding creates a queryable jobs index", () => {
   seedJobs();
   assert.ok(allJobs().length >= 10);
   assert.equal(getJob("elip-career-agent")?.company, "Elip");
+  assert.equal(getJob("elip-career-agent")?.applyUrl, "https://dashboard.tryelip.ai/jobs/PsnWr");
   assert.equal(getJob("missing-job"), undefined);
 });
 

@@ -31,7 +31,8 @@ const config: GenerateContentConfig = {
     "Use search_jobs for exploratory queries that are not tied to a saved profile, and get_profile only when asked about the profile itself. " +
     "Use get_job for details, and get_weather or bash only when explicitly relevant. " +
     "Ground every recommendation in tool results: never invent jobs, salaries or skills. " +
-    "Give concise answers with job titles, companies, match scores and the reasoning behind the top picks.",
+    "Give concise answers with job titles, companies, match scores and the reasoning behind the top picks. " +
+    "For every recommended role, include its applyUrl as a plain clickable link on a line starting with 'Apply:'. Never omit the link.",
   tools: [{ functionDeclarations: toolDeclarations }],
 };
 

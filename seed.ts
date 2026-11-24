@@ -1,5 +1,8 @@
 import type { Job } from "./db.js";
 
+const applySearchUrl = (title: string, company: string): string =>
+  `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(`${title} ${company}`)}`;
+
 export const SEED_JOBS: Job[] = [
   {
     id: "elip-career-agent",
@@ -13,6 +16,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Build LLM-powered agents that use tools and remember context, match people to jobs using retrieval and ranking, run semantic search over a changing jobs index, and improve LLM output quality through evaluation.",
     postedAt: "2026-11-10",
+    applyUrl: "https://dashboard.tryelip.ai/jobs/PsnWr",
   },
   {
     id: "vectorly-search",
@@ -26,6 +30,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Own semantic search and recommendation services for a large catalogue. Build hybrid retrieval, ranking pipelines, evaluation harnesses and production APIs.",
     postedAt: "2026-11-14",
+    applyUrl: applySearchUrl("Backend Engineer Search Recommendations", "Vectorly"),
   },
   {
     id: "northstar-rag",
@@ -39,6 +44,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Design retrieval-augmented generation pipelines, chunking strategies and evaluation suites for document-heavy enterprise products.",
     postedAt: "2026-11-12",
+    applyUrl: applySearchUrl("AI Engineer RAG Platform", "Northstar Labs"),
   },
   {
     id: "folio-agent",
@@ -52,6 +58,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Ship tool-calling agents with structured outputs, memory and guardrails. Instrument traces and build evaluation-driven improvement loops.",
     postedAt: "2026-11-08",
+    applyUrl: applySearchUrl("LLM Agent Engineer", "Folio"),
   },
   {
     id: "hireloop-matching",
@@ -65,6 +72,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Build candidate-job matching models combining embeddings, skill graphs and feedback signals. Run online experiments and offline evals.",
     postedAt: "2026-11-16",
+    applyUrl: applySearchUrl("Machine Learning Engineer Matching", "Hireloop"),
   },
   {
     id: "atlas-backend",
@@ -78,6 +86,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Build reliable backend APIs and data services. Own schema design, query performance, automated tests and deployment pipelines.",
     postedAt: "2026-11-05",
+    applyUrl: applySearchUrl("Python Backend Engineer", "Atlas Systems"),
   },
   {
     id: "cognition-evals",
@@ -91,6 +100,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Create golden datasets, automated evals and regression dashboards for LLM features. Partner with engineers to raise answer quality.",
     postedAt: "2026-11-13",
+    applyUrl: applySearchUrl("AI Evaluation Engineer", "Cognition Studio"),
   },
   {
     id: "meridian-data",
@@ -104,6 +114,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Maintain a constantly changing index of job postings. Build ingestion, deduplication, freshness monitoring and queryable APIs.",
     postedAt: "2026-11-02",
+    applyUrl: applySearchUrl("Data Engineer Jobs Index", "Meridian"),
   },
   {
     id: "orange-sre",
@@ -117,6 +128,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Support production services, write backend endpoints, improve observability and keep systems reliable as traffic grows.",
     postedAt: "2026-10-30",
+    applyUrl: applySearchUrl("Junior Backend SRE", "Orange Stack"),
   },
   {
     id: "kindred-rag-intern",
@@ -130,6 +142,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Prototype retrieval and prompting workflows, evaluate responses and ship small production features with a senior engineer.",
     postedAt: "2026-11-15",
+    applyUrl: applySearchUrl("Intern AI Products", "Kindred"),
   },
   {
     id: "payload-agents",
@@ -143,6 +156,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Build the runtime behind autonomous agents: tool registry, trace logging, retries, structured outputs and durable conversation state.",
     postedAt: "2026-11-09",
+    applyUrl: applySearchUrl("Software Engineer Agent Infrastructure", "Payload"),
   },
   {
     id: "lantern-search",
@@ -156,6 +170,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Improve search relevance using embeddings and hybrid ranking. Build evaluation sets and measure impact on key search metrics.",
     postedAt: "2026-11-11",
+    applyUrl: applySearchUrl("Search Engineer", "Lantern"),
   },
   {
     id: "bridge-careers",
@@ -169,6 +184,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Build user-facing career tools: profile intake, personalised recommendations and API integrations with partner job boards.",
     postedAt: "2026-11-07",
+    applyUrl: applySearchUrl("Product Engineer Career Tools", "Bridge"),
   },
   {
     id: "quanta-mlops",
@@ -182,6 +198,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Deploy and monitor ML and LLM services. Build repeatable pipelines for indexing, evaluation and safe rollouts.",
     postedAt: "2026-11-01",
+    applyUrl: applySearchUrl("MLOps Engineer", "Quanta"),
   },
   {
     id: "orbit-recommender",
@@ -195,6 +212,7 @@ export const SEED_JOBS: Job[] = [
     description:
       "Build personalised recommendation systems for millions of users. Work on candidate generation, ranking models and A/B testing.",
     postedAt: "2026-10-28",
+    applyUrl: applySearchUrl("Recommender Systems Engineer", "Orbit"),
   },
   {
     id: "stepstone-intern",
@@ -208,5 +226,6 @@ export const SEED_JOBS: Job[] = [
     description:
       "Help build and evaluate semantic search over job postings, improve ranking quality and ship backend features to production.",
     postedAt: "2026-11-17",
+    applyUrl: applySearchUrl("Engineering Intern AI Search", "Stepstone"),
   },
 ];
