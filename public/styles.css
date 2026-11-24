@@ -97,6 +97,13 @@ body {
   margin-top: 18px;
 }
 
+.panel-copy {
+  margin: -4px 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 .panel-head {
   display: flex;
   align-items: center;
@@ -213,6 +220,12 @@ button {
   border-color: var(--accent);
 }
 
+.ghost.small {
+  width: auto;
+  padding: 6px 10px;
+  font-size: 11px;
+}
+
 .form-message {
   min-height: 16px;
   margin: 8px 0 0;
@@ -267,6 +280,121 @@ button {
 
 @keyframes pulse {
   50% { opacity: 0.35; }
+}
+
+.matches-section {
+  padding: 16px 22px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.matches-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.matches-head h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.matches-head p {
+  margin: 4px 0 0;
+}
+
+.matches-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(236px, 1fr));
+  gap: 10px;
+  max-height: 286px;
+  overflow-y: auto;
+  padding-bottom: 14px;
+}
+
+.match-card {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel-soft);
+}
+
+.match-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.match-title {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.match-company {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.match-score {
+  flex: none;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(63, 214, 174, 0.12);
+  color: var(--success);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.match-meta {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.match-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 9px;
+}
+
+.tag {
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: rgba(108, 140, 255, 0.14);
+  color: var(--accent-soft);
+  font-size: 10px;
+}
+
+.tag.missing {
+  background: rgba(148, 161, 199, 0.12);
+  color: var(--muted);
+}
+
+.match-toggle {
+  margin-top: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent-soft);
+  font-size: 11px;
+}
+
+.match-toggle:hover {
+  text-decoration: underline;
+}
+
+.match-details {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: pre-wrap;
 }
 
 .suggestions {

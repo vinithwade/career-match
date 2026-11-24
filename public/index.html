@@ -22,14 +22,15 @@
             <h2>Your profile</h2>
             <span class="pill" id="profile-status">Not saved</span>
           </div>
+          <p class="panel-copy">Add a few details. We rank jobs by meaning and skill overlap, then you can ask follow-ups.</p>
           <form id="profile-form">
             <label>Target role<input name="targetRole" placeholder="AI engineer" /></label>
             <label>Skills<span class="hint">comma separated</span><input name="skills" placeholder="LLMs, Python, SQL" required /></label>
+            <label>Experience (years)<input name="experienceYears" type="number" min="0" value="0" /></label>
             <label>Location<input name="location" placeholder="Bengaluru" /></label>
             <label class="check"><input type="checkbox" name="remoteOnly" /> Remote only</label>
-            <label>Summary<textarea name="summary" rows="3" placeholder="Short background"></textarea></label>
-            <label>Experience (years)<input name="experienceYears" type="number" min="0" value="0" /></label>
-            <button type="submit" class="primary">Save profile</button>
+            <label>Summary<textarea name="summary" rows="3" placeholder="Short background, projects or goals"></textarea></label>
+            <button type="submit" class="primary" id="save-profile">Save & find matches</button>
           </form>
           <p class="form-message" id="profile-message" role="status"></p>
         </section>
@@ -45,22 +46,33 @@
         <header class="topbar">
           <div>
             <h2>Career copilot</h2>
-            <p>Ask for matches, search jobs, or update your profile.</p>
+            <p>Enter your details on the left. Matches appear here instantly.</p>
           </div>
           <div class="status" id="status"><span class="dot"></span><span id="status-text">Ready</span></div>
         </header>
 
+        <section class="matches-section" id="matches-section" hidden>
+          <div class="matches-head">
+            <div>
+              <h3>Best matches for you</h3>
+              <p class="muted" id="matches-summary"></p>
+            </div>
+            <button id="refresh-matches" class="ghost small">Refresh</button>
+          </div>
+          <div id="matches-list" class="matches-list"></div>
+        </section>
+
         <div class="suggestions" id="suggestions">
           <button class="chip">Recommend jobs for me</button>
+          <button class="chip">Why am I a fit for the Elip role?</button>
           <button class="chip">Search remote RAG internships</button>
-          <button class="chip">What jobs match my skills?</button>
           <button class="chip">Show my saved profile</button>
         </div>
 
         <div class="chat" id="chat" aria-live="polite">
           <div class="empty" id="empty-state">
-            <h3>Start a conversation</h3>
-            <p>Save your profile in the sidebar, then ask the agent to find your best-fit roles.</p>
+            <h3>Ready when you are</h3>
+            <p>Save your profile to see ranked roles above, then ask the agent anything about your search.</p>
           </div>
         </div>
 

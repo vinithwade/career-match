@@ -12,7 +12,7 @@ import {
   saveProfile,
   type Profile,
 } from "../db.js";
-import { ensureIndex, getJobDetails, semanticSearch } from "../jobs.js";
+import { ensureIndex, getJobDetails, rankForProfile, semanticSearch } from "../jobs.js";
 
 const moduleDir = fileURLToPath(new URL(".", import.meta.url));
 const publicDirCandidates = [
@@ -121,6 +121,30 @@ export const handler = async (req: IncomingMessage, res: ServerResponse): Promis
       const sessionId = String(body.sessionId ?? "default");
       saveProfile(sessionId, body.profile as Profile);
       send(res, 200, { sessionId, profile: loadProfile(sessionId) });
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname === "/matches") {
+      const body = await readBody(req);
+      const sessionId = String(body.sessionId ?? "web");
+      const supplied = body.profile as Profile | undefined;
+
+      if (supplied && !Array.isArray(supplied.skills)) {
+        send(res, 400, { error: "profile.skills must be an array" });
+        return;
+      }
+
+      if (supplied) saveProfile(sessionId, supplied);
+
+      const profile = supplied ?? loadProfile(sessionId);
+      if (!profile) {
+        send(res, 400, { error: "Save a profile first, then find matches." });
+        return;
+      }
+
+      const limit = Math.min(Math.max(Number(body.limit ?? 5) || 5, 1), 10);
+      const results = await rankForProfile(profile, limit);
+      send(res, 200, { sessionId, profile, count: results.length, results });
       return;
     }
 
