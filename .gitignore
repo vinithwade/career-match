@@ -4,3 +4,4 @@ career-agent.db
 .test-career-agent.db
 dist
 .vercel
+.env*
