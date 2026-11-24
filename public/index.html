@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Elip Career Agent</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">EA</div>
+          <div>
+            <h1>Elip Career Agent</h1>
+            <p>Find roles that fit you</p>
+          </div>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Your profile</h2>
+            <span class="pill" id="profile-status">Not saved</span>
+          </div>
+          <form id="profile-form">
+            <label>Target role<input name="targetRole" placeholder="AI engineer" /></label>
+            <label>Skills<span class="hint">comma separated</span><input name="skills" placeholder="LLMs, Python, SQL" required /></label>
+            <label>Location<input name="location" placeholder="Bengaluru" /></label>
+            <label class="check"><input type="checkbox" name="remoteOnly" /> Remote only</label>
+            <label>Summary<textarea name="summary" rows="3" placeholder="Short background"></textarea></label>
+            <label>Experience (years)<input name="experienceYears" type="number" min="0" value="0" /></label>
+            <button type="submit" class="primary">Save profile</button>
+          </form>
+          <p class="form-message" id="profile-message" role="status"></p>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><h2>Session</h2></div>
+          <label>Conversation ID<input id="session-id" value="web" /></label>
+          <button id="clear-chat" class="ghost">Clear chat</button>
+        </section>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <h2>Career copilot</h2>
+            <p>Ask for matches, search jobs, or update your profile.</p>
+          </div>
+          <div class="status" id="status"><span class="dot"></span><span id="status-text">Ready</span></div>
+        </header>
+
+        <div class="suggestions" id="suggestions">
+          <button class="chip">Recommend jobs for me</button>
+          <button class="chip">Search remote RAG internships</button>
+          <button class="chip">What jobs match my skills?</button>
+          <button class="chip">Show my saved profile</button>
+        </div>
+
+        <div class="chat" id="chat" aria-live="polite">
+          <div class="empty" id="empty-state">
+            <h3>Start a conversation</h3>
+            <p>Save your profile in the sidebar, then ask the agent to find your best-fit roles.</p>
+          </div>
+        </div>
+
+        <form class="composer" id="chat-form">
+          <textarea id="prompt" rows="2" placeholder="Ask the agent anything about your job search..."></textarea>
+          <button type="submit" id="send" class="primary">Send</button>
+        </form>
+        <p class="hint center">Enter to send · Shift + Enter for a new line</p>
+      </main>
+
+      <aside class="trace-panel">
+        <div class="panel-head">
+          <h2>Agent activity</h2>
+          <span class="pill" id="turn-count">0 turns</span>
+        </div>
+        <div id="trace-list" class="trace-list">
+          <p class="muted">Tool calls will appear here.</p>
+        </div>
+      </aside>
+    </div>
+    <script src="/app.js"></script>
+  </body>
+</html>
