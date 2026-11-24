@@ -484,19 +484,39 @@ button {
   color: var(--muted);
 }
 
+.message-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.message-links-label {
+  color: var(--success);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 .message-link {
   display: inline-block;
-  margin: 4px 0;
-  padding: 4px 9px;
-  border-radius: 999px;
+  max-width: 100%;
+  padding: 6px 10px;
+  border-radius: 8px;
   background: rgba(63, 214, 174, 0.14);
   color: var(--success);
   font-size: 11px;
   font-weight: 600;
   text-decoration: none;
+  word-break: break-word;
 }
 
 .message-link:hover {
+  filter: brightness(1.2);
   text-decoration: underline;
 }
 

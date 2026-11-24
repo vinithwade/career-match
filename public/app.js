@@ -66,11 +66,33 @@ const appendLinkedText = (element, text) => {
   if (lastIndex < text.length) element.append(document.createTextNode(text.slice(lastIndex)));
 };
 
-const addMessage = (role, content) => {
+const addMessage = (role, content, links = []) => {
   removeEmptyState();
   const message = document.createElement("div");
   message.className = `message ${role}`;
   appendLinkedText(message, content);
+
+  if (links.length) {
+    const box = document.createElement("div");
+    box.className = "message-links";
+    const label = document.createElement("span");
+    label.className = "message-links-label";
+    label.textContent = "Apply links";
+    box.append(label);
+
+    for (const job of links) {
+      const link = document.createElement("a");
+      link.href = job.applyUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.className = "message-link";
+      link.textContent = `${job.title}${job.company ? ` — ${job.company}` : ""} ↗`;
+      box.append(link);
+    }
+
+    message.append(box);
+  }
+
   chat.append(message);
   scrollToBottom();
 };
@@ -314,7 +336,7 @@ const sendPrompt = async (text) => {
       body: JSON.stringify({ prompt: value, sessionId: sessionId() }),
     });
     typing.remove();
-    addMessage("model", result.answer);
+    addMessage("model", result.answer, result.applyLinks ?? []);
     renderTrace(result.trace ?? [], result.turns ?? 0);
     setStatus("Ready");
   } catch (error) {

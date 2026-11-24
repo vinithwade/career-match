@@ -18,10 +18,19 @@ export interface ToolTrace {
   error?: string;
 }
 
+export interface ApplyLink {
+  id: string;
+  title: string;
+  company: string;
+  applyUrl: string;
+  matchScore?: number;
+}
+
 export interface AgentResult {
   answer: string;
   trace: ToolTrace[];
   turns: number;
+  applyLinks: ApplyLink[];
 }
 
 const config: GenerateContentConfig = {
@@ -32,7 +41,7 @@ const config: GenerateContentConfig = {
     "Use get_job for details, and get_weather or bash only when explicitly relevant. " +
     "Ground every recommendation in tool results: never invent jobs, salaries or skills. " +
     "Give concise answers with job titles, companies, match scores and the reasoning behind the top picks. " +
-    "For every recommended role, include its applyUrl as a plain clickable link on a line starting with 'Apply:'. Never omit the link.",
+    "The UI adds apply buttons for every role automatically, so do not print raw URLs in your answer.",
   tools: [{ functionDeclarations: toolDeclarations }],
 };
 
@@ -77,10 +86,47 @@ const generateWithFallback = async (ai: GoogleGenAI, contents: Content[]) => {
   throw new Error(`Gemini request failed: ${describeError(lastError)}`);
 };
 
+const collectApplyLinks = (output: unknown): ApplyLink[] => {
+  const candidates: unknown[] = [];
+
+  if (Array.isArray(output)) {
+    candidates.push(...output);
+  } else if (output && typeof output === "object") {
+    const record = output as Record<string, unknown>;
+    if (Array.isArray(record.results)) candidates.push(...record.results);
+    if (Array.isArray(record.matches)) candidates.push(...record.matches);
+    if (record.applyUrl) candidates.push(record);
+  }
+
+  return candidates.flatMap((item) => {
+    if (!item || typeof item !== "object") return [];
+    const job = item as Record<string, unknown>;
+    if (typeof job.applyUrl !== "string" || typeof job.title !== "string") return [];
+    return [
+      {
+        id: typeof job.id === "string" ? job.id : job.title,
+        title: job.title,
+        company: typeof job.company === "string" ? job.company : "",
+        applyUrl: job.applyUrl,
+        matchScore: typeof job.matchScore === "number" ? job.matchScore : undefined,
+      },
+    ];
+  });
+};
+
+const dedupeApplyLinks = (links: ApplyLink[]): ApplyLink[] => {
+  const seen = new Set<string>();
+  return links.filter((link) => {
+    if (seen.has(link.applyUrl)) return false;
+    seen.add(link.applyUrl);
+    return true;
+  });
+};
+
 const runCalls = async (
   calls: FunctionCall[],
   sessionId: string,
-): Promise<{ responses: FunctionResponse[]; trace: ToolTrace[] }> => {
+): Promise<{ responses: FunctionResponse[]; trace: ToolTrace[]; applyLinks: ApplyLink[] }> => {
   const settled = await Promise.all(
     calls.map(async (call) => {
       const name = call.name ?? "";
@@ -90,12 +136,14 @@ const runCalls = async (
         return {
           response: { id: call.id, name, response: { output } },
           trace: { name, args, ok: true } satisfies ToolTrace,
+          applyLinks: collectApplyLinks(output),
         };
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         return {
           response: { id: call.id, name, response: { error: message } },
           trace: { name, args, ok: false, error: message } satisfies ToolTrace,
+          applyLinks: [] as ApplyLink[],
         };
       }
     }),
@@ -104,6 +152,7 @@ const runCalls = async (
   return {
     responses: settled.map((item) => item.response),
     trace: settled.map((item) => item.trace),
+    applyLinks: dedupeApplyLinks(settled.flatMap((item) => item.applyLinks)),
   };
 };
 
@@ -120,6 +169,7 @@ export const runAgent = async (prompt: string, sessionId = "default"): Promise<A
   ];
 
   const trace: ToolTrace[] = [];
+  const applyLinks: ApplyLink[] = [];
 
   for (let turn = 0; turn < MAX_TURNS; turn++) {
     const response = await generateWithFallback(ai, contents);
@@ -133,11 +183,12 @@ export const runAgent = async (prompt: string, sessionId = "default"): Promise<A
 
       appendMessage(sessionId, "user", prompt);
       appendMessage(sessionId, "model", answer);
-      return { answer, trace, turns: turn + 1 };
+      return { answer, trace, turns: turn + 1, applyLinks: dedupeApplyLinks(applyLinks).slice(0, 5) };
     }
 
     const result = await runCalls(calls, sessionId);
     trace.push(...result.trace);
+    applyLinks.push(...result.applyLinks);
     contents.push({
       role: "user",
       parts: result.responses.map((functionResponse) => ({ functionResponse })),
