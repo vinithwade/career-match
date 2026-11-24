@@ -18,6 +18,7 @@ const matchesList = $("matches-list");
 const matchesSummary = $("matches-summary");
 const matchesCount = $("matches-count");
 const refreshMatchesButton = $("refresh-matches");
+const mapPanel = $("map-panel");
 const mapSummary = $("map-summary");
 const mapPins = $("map-pins");
 const locationList = $("location-list");
@@ -381,6 +382,7 @@ const renderMap = (jobs) => {
 
 const renderMatches = (data) => {
   discoverSection.hidden = false;
+  mapPanel.hidden = false;
   currentMatches = data.results ?? [];
   selectedLocation = null;
 
@@ -419,6 +421,7 @@ const loadSession = async () => {
       await loadMatches();
     } else {
       discoverSection.hidden = true;
+      mapPanel.hidden = true;
       matchesList.innerHTML = "";
       mapPins.innerHTML = "";
       locationList.innerHTML = "";

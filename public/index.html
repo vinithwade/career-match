@@ -57,43 +57,15 @@
         <section class="discover-section" id="discover-section" hidden>
           <div class="discover-head">
             <div>
-              <h3>Discover openings</h3>
+              <h3>Best matches for you</h3>
               <p class="muted" id="matches-summary"></p>
             </div>
             <div class="discover-actions">
-              <button id="all-locations" class="ghost small">All locations</button>
+              <span class="pill" id="matches-count"></span>
               <button id="refresh-matches" class="ghost small">Refresh</button>
             </div>
           </div>
-
-          <div class="discover-grid">
-            <div class="discover-col map-col">
-              <div class="col-head">
-                <span>Location map</span>
-                <span class="muted" id="map-summary"></span>
-              </div>
-              <div class="map-canvas">
-                <svg id="location-map" viewBox="0 0 500 500" role="img" aria-label="Map of job openings">
-                  <path
-                    class="map-land"
-                    d="M178 34 L232 44 L268 64 L306 56 L348 78 L388 112 L412 158 L396 194 L374 222 L360 268 L330 316 L296 360 L260 414 L232 392 L210 340 L180 296 L150 250 L126 198 L140 150 L152 96 Z"
-                  />
-                  <path class="map-line" d="M150 250 L210 340 M232 44 L260 414 M306 56 L150 250" />
-                  <text class="map-label" x="250" y="270">INDIA</text>
-                  <g id="map-pins"></g>
-                </svg>
-              </div>
-              <div id="location-list" class="location-list"></div>
-            </div>
-
-            <div class="discover-col matches-col">
-              <div class="col-head">
-                <span>Best matches</span>
-                <span class="muted" id="matches-count"></span>
-              </div>
-              <div id="matches-list" class="matches-list"></div>
-            </div>
-          </div>
+          <div id="matches-list" class="matches-list"></div>
         </section>
 
         <div class="chat-head">
@@ -123,13 +95,35 @@
       </main>
 
       <aside class="trace-panel">
-        <div class="panel-head">
-          <h2>Agent activity</h2>
-          <span class="pill" id="turn-count">0 turns</span>
-        </div>
-        <div id="trace-list" class="trace-list">
-          <p class="muted">Tool calls will appear here.</p>
-        </div>
+        <section class="map-panel" id="map-panel" hidden>
+          <div class="panel-head">
+            <h2>Location map</h2>
+            <span class="pill" id="map-summary"></span>
+          </div>
+          <div class="map-canvas">
+            <svg id="location-map" viewBox="0 0 500 500" role="img" aria-label="Map of job openings">
+              <path
+                class="map-land"
+                d="M178 34 L232 44 L268 64 L306 56 L348 78 L388 112 L412 158 L396 194 L374 222 L360 268 L330 316 L296 360 L260 414 L232 392 L210 340 L180 296 L150 250 L126 198 L140 150 L152 96 Z"
+              />
+              <path class="map-line" d="M150 250 L210 340 M232 44 L260 414 M306 56 L150 250" />
+              <text class="map-label" x="250" y="270">INDIA</text>
+              <g id="map-pins"></g>
+            </svg>
+          </div>
+          <div id="location-list" class="location-list"></div>
+          <button id="all-locations" class="ghost small">All locations</button>
+        </section>
+
+        <section class="trace-block">
+          <div class="panel-head">
+            <h2>Agent activity</h2>
+            <span class="pill" id="turn-count">0 turns</span>
+          </div>
+          <div id="trace-list" class="trace-list">
+            <p class="muted">Tool calls will appear here.</p>
+          </div>
+        </section>
       </aside>
     </div>
 
