@@ -13,11 +13,11 @@ const statusText = $("status-text");
 const profileStatus = $("profile-status");
 const profileMessage = $("profile-message");
 const turnCount = $("turn-count");
-const matchesSection = $("matches-section");
+const discoverSection = $("discover-section");
 const matchesList = $("matches-list");
 const matchesSummary = $("matches-summary");
+const matchesCount = $("matches-count");
 const refreshMatchesButton = $("refresh-matches");
-const mapSection = $("map-section");
 const mapSummary = $("map-summary");
 const mapPins = $("map-pins");
 const locationList = $("location-list");
@@ -240,13 +240,13 @@ const createMatchCard = (job) => {
 
   const tags = document.createElement("div");
   tags.className = "match-tags";
-  for (const skill of (job.matchedSkills ?? []).slice(0, 4)) {
+  for (const skill of (job.matchedSkills ?? []).slice(0, 3)) {
     const tag = document.createElement("span");
     tag.className = "tag";
     tag.textContent = skill;
     tags.append(tag);
   }
-  for (const skill of (job.missingSkills ?? []).slice(0, 2)) {
+  for (const skill of (job.missingSkills ?? []).slice(0, 1)) {
     const tag = document.createElement("span");
     tag.className = "tag missing";
     tag.textContent = `needs ${skill}`;
@@ -305,6 +305,7 @@ const renderMatchCards = () => {
   matchesSummary.textContent = selectedLocation
     ? `${visible.length} of ${currentMatches.length} openings in ${selectedJob ? locationLabel(selectedJob) : "this location"}.`
     : matchesSummaryText;
+  matchesCount.textContent = `${visible.length}/${currentMatches.length}`;
 
   if (!visible.length) {
     const empty = document.createElement("p");
@@ -379,8 +380,7 @@ const renderMap = (jobs) => {
 };
 
 const renderMatches = (data) => {
-  matchesSection.hidden = false;
-  mapSection.hidden = false;
+  discoverSection.hidden = false;
   currentMatches = data.results ?? [];
   selectedLocation = null;
 
@@ -418,8 +418,7 @@ const loadSession = async () => {
     if (profile) {
       await loadMatches();
     } else {
-      matchesSection.hidden = true;
-      mapSection.hidden = true;
+      discoverSection.hidden = true;
       matchesList.innerHTML = "";
       mapPins.innerHTML = "";
       locationList.innerHTML = "";

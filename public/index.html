@@ -54,40 +54,52 @@
           </div>
         </header>
 
-        <section class="map-section" id="map-section" hidden>
-          <div class="matches-head">
+        <section class="discover-section" id="discover-section" hidden>
+          <div class="discover-head">
             <div>
-              <h3>Openings by location</h3>
-              <p class="muted" id="map-summary"></p>
+              <h3>Discover openings</h3>
+              <p class="muted" id="matches-summary"></p>
             </div>
-            <button id="all-locations" class="ghost small">All locations</button>
+            <div class="discover-actions">
+              <button id="all-locations" class="ghost small">All locations</button>
+              <button id="refresh-matches" class="ghost small">Refresh</button>
+            </div>
           </div>
-          <div class="map-layout">
-            <div class="map-canvas">
-              <svg id="location-map" viewBox="0 0 500 500" role="img" aria-label="Map of job openings">
-                <path
-                  class="map-land"
-                  d="M178 34 L232 44 L268 64 L306 56 L348 78 L388 112 L412 158 L396 194 L374 222 L360 268 L330 316 L296 360 L260 414 L232 392 L210 340 L180 296 L150 250 L126 198 L140 150 L152 96 Z"
-                />
-                <path class="map-line" d="M150 250 L210 340 M232 44 L260 414 M306 56 L150 250" />
-                <text class="map-label" x="250" y="270">INDIA</text>
-                <g id="map-pins"></g>
-              </svg>
+
+          <div class="discover-grid">
+            <div class="discover-col map-col">
+              <div class="col-head">
+                <span>Location map</span>
+                <span class="muted" id="map-summary"></span>
+              </div>
+              <div class="map-canvas">
+                <svg id="location-map" viewBox="0 0 500 500" role="img" aria-label="Map of job openings">
+                  <path
+                    class="map-land"
+                    d="M178 34 L232 44 L268 64 L306 56 L348 78 L388 112 L412 158 L396 194 L374 222 L360 268 L330 316 L296 360 L260 414 L232 392 L210 340 L180 296 L150 250 L126 198 L140 150 L152 96 Z"
+                  />
+                  <path class="map-line" d="M150 250 L210 340 M232 44 L260 414 M306 56 L150 250" />
+                  <text class="map-label" x="250" y="270">INDIA</text>
+                  <g id="map-pins"></g>
+                </svg>
+              </div>
+              <div id="location-list" class="location-list"></div>
             </div>
-            <div id="location-list" class="location-list"></div>
+
+            <div class="discover-col matches-col">
+              <div class="col-head">
+                <span>Best matches</span>
+                <span class="muted" id="matches-count"></span>
+              </div>
+              <div id="matches-list" class="matches-list"></div>
+            </div>
           </div>
         </section>
 
-        <section class="matches-section" id="matches-section" hidden>
-          <div class="matches-head">
-            <div>
-              <h3>Best matches for you</h3>
-              <p class="muted" id="matches-summary"></p>
-            </div>
-            <button id="refresh-matches" class="ghost small">Refresh</button>
-          </div>
-          <div id="matches-list" class="matches-list"></div>
-        </section>
+        <div class="chat-head">
+          <h3>Chat</h3>
+          <span class="muted">Ask follow-ups about your matches</span>
+        </div>
 
         <div class="suggestions" id="suggestions">
           <button class="chip">Recommend jobs for me</button>

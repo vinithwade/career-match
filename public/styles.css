@@ -288,33 +288,87 @@ button {
   50% { opacity: 0.35; }
 }
 
-.map-section {
-  padding: 16px 22px 0;
+.discover-section {
+  flex: none;
+  padding: 14px 20px 0;
   border-bottom: 1px solid var(--border);
 }
 
-.map-layout {
+.discover-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.discover-head h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.discover-head p {
+  margin: 4px 0 0;
+  font-size: 11px;
+}
+
+.discover-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.discover-grid {
   display: grid;
-  grid-template-columns: minmax(220px, 1.15fr) minmax(180px, 0.85fr);
-  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+.discover-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(13, 21, 42, 0.55);
+}
+
+.col-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.col-head .muted {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .map-canvas {
   display: grid;
   place-items: center;
-  min-height: 210px;
+  height: 150px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 10px;
   background:
     linear-gradient(rgba(108, 140, 255, 0.06) 1px, transparent 1px),
     linear-gradient(90deg, rgba(108, 140, 255, 0.06) 1px, transparent 1px),
     #0d152a;
-  background-size: 28px 28px;
+  background-size: 24px 24px;
 }
 
 .map-canvas svg {
   width: 100%;
-  height: 210px;
+  height: 150px;
 }
 
 .map-land {
@@ -368,8 +422,8 @@ button {
 .location-list {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  max-height: 210px;
+  gap: 5px;
+  max-height: 92px;
   overflow-y: auto;
 }
 
@@ -379,13 +433,13 @@ button {
   justify-content: space-between;
   gap: 8px;
   width: 100%;
-  padding: 9px 10px;
+  padding: 6px 8px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--panel-soft);
   color: var(--text);
   text-align: left;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .location-item:hover,
@@ -403,41 +457,19 @@ button {
   font-weight: 700;
 }
 
-.matches-section {
-  padding: 16px 22px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.matches-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.matches-head h3 {
-  margin: 0;
-  font-size: 14px;
-}
-
-.matches-head p {
-  margin: 4px 0 0;
-}
-
 .matches-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(236px, 1fr));
-  gap: 10px;
-  max-height: 286px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 260px;
   overflow-y: auto;
-  padding-bottom: 14px;
+  padding-right: 2px;
 }
 
 .match-card {
-  padding: 12px;
+  padding: 10px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--panel-soft);
 }
 
@@ -534,11 +566,24 @@ button {
   white-space: pre-wrap;
 }
 
+.chat-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 22px 0;
+}
+
+.chat-head h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
 .suggestions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 14px 22px 0;
+  gap: 7px;
+  padding: 10px 22px 0;
 }
 
 .chip {
@@ -557,11 +602,12 @@ button {
 
 .chat {
   flex: 1;
+  min-height: 120px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   overflow-y: auto;
-  padding: 22px;
+  padding: 14px 22px;
 }
 
 .empty {
@@ -805,7 +851,7 @@ button {
     max-height: none;
   }
 
-  .map-layout {
+  .discover-grid {
     grid-template-columns: 1fr;
   }
 
