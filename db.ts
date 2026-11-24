@@ -6,6 +6,11 @@ export interface Job {
   title: string;
   company: string;
   location: string;
+  city: string;
+  state: string;
+  country: string;
+  lat: number;
+  lng: number;
   mode: "remote" | "onsite" | "hybrid";
   employmentType: "internship" | "full-time";
   pay: string;
@@ -35,6 +40,11 @@ interface JobRow {
   title: string;
   company: string;
   location: string;
+  city: string | null;
+  state: string | null;
+  country: string | null;
+  lat: number | null;
+  lng: number | null;
   mode: Job["mode"];
   employment_type: Job["employmentType"];
   pay: string;
@@ -62,6 +72,11 @@ db.exec(`
     title TEXT NOT NULL,
     company TEXT NOT NULL,
     location TEXT NOT NULL,
+    city TEXT,
+    state TEXT,
+    country TEXT,
+    lat REAL,
+    lng REAL,
     mode TEXT NOT NULL,
     employment_type TEXT NOT NULL,
     pay TEXT NOT NULL,
@@ -87,8 +102,18 @@ db.exec(`
 `);
 
 const jobColumns = db.prepare("PRAGMA table_info(jobs)").all() as { name: string }[];
-if (!jobColumns.some((column) => column.name === "apply_url")) {
-  db.exec("ALTER TABLE jobs ADD COLUMN apply_url TEXT");
+const newJobColumns: Record<string, string> = {
+  apply_url: "TEXT",
+  city: "TEXT",
+  state: "TEXT",
+  country: "TEXT",
+  lat: "REAL",
+  lng: "REAL",
+};
+for (const [name, type] of Object.entries(newJobColumns)) {
+  if (!jobColumns.some((column) => column.name === name)) {
+    db.exec(`ALTER TABLE jobs ADD COLUMN ${name} ${type}`);
+  }
 }
 
 const toJob = (row: JobRow): Job => ({
@@ -96,6 +121,11 @@ const toJob = (row: JobRow): Job => ({
   title: row.title,
   company: row.company,
   location: row.location,
+  city: row.city ?? "",
+  state: row.state ?? "",
+  country: row.country ?? "India",
+  lat: row.lat ?? 22.9734,
+  lng: row.lng ?? 78.6569,
   mode: row.mode,
   employmentType: row.employment_type,
   pay: row.pay,
@@ -108,12 +138,17 @@ const toJob = (row: JobRow): Job => ({
 
 export const upsertJob = (job: Job): void => {
   db.prepare(`
-    INSERT INTO jobs (id, title, company, location, mode, employment_type, pay, skills, description, posted_at, apply_url, embedding)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO jobs (id, title, company, location, city, state, country, lat, lng, mode, employment_type, pay, skills, description, posted_at, apply_url, embedding)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
       title = excluded.title,
       company = excluded.company,
       location = excluded.location,
+      city = excluded.city,
+      state = excluded.state,
+      country = excluded.country,
+      lat = excluded.lat,
+      lng = excluded.lng,
       mode = excluded.mode,
       employment_type = excluded.employment_type,
       pay = excluded.pay,
@@ -126,6 +161,11 @@ export const upsertJob = (job: Job): void => {
     job.title,
     job.company,
     job.location,
+    job.city,
+    job.state,
+    job.country,
+    job.lat,
+    job.lng,
     job.mode,
     job.employmentType,
     job.pay,

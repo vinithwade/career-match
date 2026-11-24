@@ -46,10 +46,37 @@
         <header class="topbar">
           <div>
             <h2>Career copilot</h2>
-            <p>Enter your details on the left. Matches appear here instantly.</p>
+            <p>Your openings, ranked and mapped by location.</p>
           </div>
-          <div class="status" id="status"><span class="dot"></span><span id="status-text">Ready</span></div>
+          <div class="topbar-actions">
+            <button id="edit-profile" class="ghost small">Edit profile</button>
+            <div class="status" id="status"><span class="dot"></span><span id="status-text">Ready</span></div>
+          </div>
         </header>
+
+        <section class="map-section" id="map-section" hidden>
+          <div class="matches-head">
+            <div>
+              <h3>Openings by location</h3>
+              <p class="muted" id="map-summary"></p>
+            </div>
+            <button id="all-locations" class="ghost small">All locations</button>
+          </div>
+          <div class="map-layout">
+            <div class="map-canvas">
+              <svg id="location-map" viewBox="0 0 500 500" role="img" aria-label="Map of job openings">
+                <path
+                  class="map-land"
+                  d="M178 34 L232 44 L268 64 L306 56 L348 78 L388 112 L412 158 L396 194 L374 222 L360 268 L330 316 L296 360 L260 414 L232 392 L210 340 L180 296 L150 250 L126 198 L140 150 L152 96 Z"
+                />
+                <path class="map-line" d="M150 250 L210 340 M232 44 L260 414 M306 56 L150 250" />
+                <text class="map-label" x="250" y="270">INDIA</text>
+                <g id="map-pins"></g>
+              </svg>
+            </div>
+            <div id="location-list" class="location-list"></div>
+          </div>
+        </section>
 
         <section class="matches-section" id="matches-section" hidden>
           <div class="matches-head">
@@ -92,6 +119,22 @@
           <p class="muted">Tool calls will appear here.</p>
         </div>
       </aside>
+    </div>
+
+    <div class="onboarding" id="onboarding">
+      <div class="onboarding-card">
+        <div class="onboarding-badge">Start here</div>
+        <h2>What opening are you looking for?</h2>
+        <p class="onboarding-copy">Tell us your target role and skills. We will rank the openings and plot them on the location map.</p>
+        <form id="onboarding-form">
+          <label>Target role or opening<input name="targetRole" placeholder="AI engineer, backend intern, ..." required /></label>
+          <label>Skills<span class="hint">comma separated</span><input name="skills" placeholder="LLMs, Python, SQL, embeddings" required /></label>
+          <label>Preferred location<span class="hint">city, state or country</span><input name="location" placeholder="Bengaluru / India / Remote" /></label>
+          <label class="check"><input type="checkbox" name="remoteOnly" /> Remote only</label>
+          <button type="submit" class="primary" id="onboarding-submit">Show my openings</button>
+        </form>
+        <p class="form-message" id="onboarding-error" role="status"></p>
+      </div>
     </div>
     <script src="/app.js"></script>
   </body>
