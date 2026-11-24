@@ -295,6 +295,7 @@ const createMatchCard = (job, index = 0) => {
   toggle.addEventListener("click", () => {
     const open = detailsPanel.hidden;
     detailsPanel.hidden = !open;
+    card.classList.toggle("is-expanded", open);
     toggle.setAttribute("aria-expanded", String(open));
     toggle.textContent = open ? "Hide details" : "Why this match?";
   });

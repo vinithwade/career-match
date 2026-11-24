@@ -609,7 +609,9 @@ textarea:focus-visible {
   display: grid;
   flex: 1;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-auto-rows: max-content;
   align-content: start;
+  align-items: start;
   gap: 12px;
   min-height: 0;
   overflow-y: auto;
@@ -635,6 +637,8 @@ textarea:focus-visible {
 
 .match-card {
   position: relative;
+  z-index: 1;
+  align-self: start;
   counter-increment: rank;
   min-height: 184px;
   padding: 18px 16px 15px;
@@ -646,7 +650,7 @@ textarea:focus-visible {
   box-shadow: var(--md-sys-elevation-level1);
   animation: card-in 620ms var(--md-sys-motion-easing-emphasized) both;
   animation-delay: calc(var(--i, 0) * 62ms);
-  transition: transform 320ms var(--md-sys-motion-easing-emphasized), box-shadow 320ms var(--md-sys-motion-easing-emphasized), border-color 320ms;
+  transition: box-shadow 320ms var(--md-sys-motion-easing-emphasized), border-color 320ms;
 }
 
 .match-card::before {
@@ -660,10 +664,17 @@ textarea:focus-visible {
   letter-spacing: 0.08em;
 }
 
-.match-card:hover {
-  transform: translateY(-5px) scale(1.012);
+.match-card:hover,
+.match-card:focus-within {
+  z-index: 2;
   border-color: rgba(198, 200, 255, 0.34);
   box-shadow: var(--md-sys-elevation-level3), 0 0 0 1px rgba(198, 200, 255, 0.08);
+}
+
+.match-card.is-expanded {
+  z-index: 3;
+  border-color: rgba(182, 222, 209, 0.42);
+  box-shadow: var(--md-sys-elevation-level4), 0 0 0 1px rgba(182, 222, 209, 0.12);
 }
 
 @keyframes card-in {
@@ -809,6 +820,8 @@ textarea:focus-visible {
 }
 
 .match-details-panel {
+  position: relative;
+  z-index: 1;
   margin-top: 12px;
   padding: 12px;
   border: 1px solid rgba(198, 200, 255, 0.14);
