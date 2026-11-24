@@ -46,7 +46,7 @@
         <header class="topbar">
           <div>
             <h2>Career copilot</h2>
-            <p>Your openings, ranked and mapped by location.</p>
+            <p>Your openings, ranked for your profile.</p>
           </div>
           <div class="topbar-actions">
             <button id="edit-profile" class="ghost small">Edit profile</button>
@@ -95,26 +95,6 @@
       </main>
 
       <aside class="trace-panel">
-        <section class="map-panel" id="map-panel" hidden>
-          <div class="panel-head">
-            <h2>Location map</h2>
-            <span class="pill" id="map-summary"></span>
-          </div>
-          <div class="map-canvas">
-            <svg id="location-map" viewBox="0 0 500 500" role="img" aria-label="Map of job openings">
-              <path
-                class="map-land"
-                d="M178 34 L232 44 L268 64 L306 56 L348 78 L388 112 L412 158 L396 194 L374 222 L360 268 L330 316 L296 360 L260 414 L232 392 L210 340 L180 296 L150 250 L126 198 L140 150 L152 96 Z"
-              />
-              <path class="map-line" d="M150 250 L210 340 M232 44 L260 414 M306 56 L150 250" />
-              <text class="map-label" x="250" y="270">INDIA</text>
-              <g id="map-pins"></g>
-            </svg>
-          </div>
-          <div id="location-list" class="location-list"></div>
-          <button id="all-locations" class="ghost small">All locations</button>
-        </section>
-
         <section class="trace-block">
           <div class="panel-head">
             <h2>Agent activity</h2>
@@ -131,7 +111,7 @@
       <div class="onboarding-card">
         <div class="onboarding-badge">Start here</div>
         <h2>What opening are you looking for?</h2>
-        <p class="onboarding-copy">Tell us your target role and skills. We will rank the openings and plot them on the location map.</p>
+        <p class="onboarding-copy">Tell us your target role and skills. We will rank the best openings for you.</p>
         <form id="onboarding-form">
           <label>Target role or opening<input name="targetRole" placeholder="AI engineer, backend intern, ..." required /></label>
           <label>Skills<span class="hint">comma separated</span><input name="skills" placeholder="LLMs, Python, SQL, embeddings" required /></label>

@@ -18,11 +18,6 @@ const matchesList = $("matches-list");
 const matchesSummary = $("matches-summary");
 const matchesCount = $("matches-count");
 const refreshMatchesButton = $("refresh-matches");
-const mapPanel = $("map-panel");
-const mapSummary = $("map-summary");
-const mapPins = $("map-pins");
-const locationList = $("location-list");
-const allLocationsButton = $("all-locations");
 const onboarding = $("onboarding");
 const onboardingForm = $("onboarding-form");
 const onboardingSubmit = $("onboarding-submit");
@@ -33,7 +28,6 @@ sessionInput.value = `visit-${Date.now().toString(36)}`;
 
 let busy = false;
 let currentMatches = [];
-let selectedLocation = null;
 let matchesSummaryText = "";
 
 const sessionId = () => sessionInput.value.trim() || "web";
@@ -197,22 +191,6 @@ const loadProfile = async () => {
   return data.profile;
 };
 
-const svgElement = (name, attributes = {}) => {
-  const element = document.createElementNS("http://www.w3.org/2000/svg", name);
-  for (const [key, value] of Object.entries(attributes)) element.setAttribute(key, String(value));
-  return element;
-};
-
-const projectLocation = (lat, lng) => ({
-  x: Math.max(22, Math.min(478, ((lng - 68) / 30) * 500)),
-  y: Math.max(22, Math.min(478, ((36 - lat) / 30) * 500)),
-});
-
-const locationKey = (job) => `${job.city ?? ""}|${job.state ?? ""}|${job.country ?? ""}`;
-
-const locationLabel = (job) =>
-  job.city === "Remote" ? `Remote · ${job.country ?? "India"}` : [job.city, job.state].filter(Boolean).join(", ");
-
 const createMatchCard = (job) => {
   const card = document.createElement("article");
   card.className = "match-card";
@@ -289,109 +267,33 @@ const createMatchCard = (job) => {
   return card;
 };
 
-const updateLocationHighlights = () => {
-  for (const element of [...mapPins.querySelectorAll(".map-pin"), ...locationList.querySelectorAll(".location-item")]) {
-    element.classList.toggle("active", element.dataset.key === selectedLocation);
-  }
-};
-
 const renderMatchCards = () => {
   matchesList.innerHTML = "";
+  matchesSummary.textContent = matchesSummaryText;
+  matchesCount.textContent = `${currentMatches.length}`;
 
-  const visible = selectedLocation
-    ? currentMatches.filter((job) => locationKey(job) === selectedLocation)
-    : currentMatches;
-
-  const selectedJob = currentMatches.find((job) => locationKey(job) === selectedLocation);
-  matchesSummary.textContent = selectedLocation
-    ? `${visible.length} of ${currentMatches.length} openings in ${selectedJob ? locationLabel(selectedJob) : "this location"}.`
-    : matchesSummaryText;
-  matchesCount.textContent = `${visible.length}/${currentMatches.length}`;
-
-  if (!visible.length) {
+  if (!currentMatches.length) {
     const empty = document.createElement("p");
     empty.className = "muted";
-    empty.textContent = "No openings at this location.";
+    empty.textContent = "No matches to show yet.";
     matchesList.append(empty);
     return;
   }
 
-  for (const job of visible) {
+  for (const job of currentMatches) {
     matchesList.append(createMatchCard(job));
   }
 };
 
-const renderMap = (jobs) => {
-  mapPins.innerHTML = "";
-  locationList.innerHTML = "";
-
-  const groups = new Map();
-  for (const job of jobs) {
-    const key = locationKey(job);
-    if (!groups.has(key)) groups.set(key, { job, jobs: [] });
-    groups.get(key).jobs.push(job);
-  }
-
-  const entries = [...groups.entries()].sort((a, b) => b[1].jobs.length - a[1].jobs.length);
-  mapSummary.textContent = jobs.length
-    ? `${entries.length} location${entries.length === 1 ? "" : "s"} · ${jobs.length} openings`
-    : "No locations to map yet.";
-
-  for (const [key, group] of entries) {
-    const label = locationLabel(group.job);
-    const count = group.jobs.length;
-    const { x, y } = projectLocation(group.job.lat ?? 22.9734, group.job.lng ?? 78.6569);
-
-    const pin = svgElement("g", { class: "map-pin", transform: `translate(${x} ${y})` });
-    pin.dataset.key = key;
-    const title = svgElement("title");
-    title.textContent = `${label}: ${count} opening${count === 1 ? "" : "s"}`;
-    const circle = svgElement("circle", { r: 14 });
-    const countText = svgElement("text", { y: 4 });
-    countText.textContent = String(count);
-    const cityText = svgElement("text", { class: "map-pin-label", y: 27 });
-    cityText.textContent = group.job.city ?? "";
-    pin.append(title, circle, countText, cityText);
-    pin.addEventListener("click", () => {
-      selectedLocation = key;
-      renderMatchCards();
-      updateLocationHighlights();
-    });
-    mapPins.append(pin);
-
-    const item = document.createElement("button");
-    item.type = "button";
-    item.className = "location-item";
-    item.dataset.key = key;
-    const name = document.createElement("span");
-    name.textContent = label;
-    const badge = document.createElement("span");
-    badge.className = "location-count";
-    badge.textContent = String(count);
-    item.append(name, badge);
-    item.addEventListener("click", () => {
-      selectedLocation = key;
-      renderMatchCards();
-      updateLocationHighlights();
-    });
-    locationList.append(item);
-  }
-
-  updateLocationHighlights();
-};
-
 const renderMatches = (data) => {
   discoverSection.hidden = false;
-  mapPanel.hidden = false;
   currentMatches = data.results ?? [];
-  selectedLocation = null;
 
   const role = data.profile?.targetRole || "your profile";
   matchesSummaryText = data.count
     ? `${data.count} role${data.count === 1 ? "" : "s"} ranked for ${role} by meaning and skill overlap.`
     : "No roles matched your filters. Try removing the location or remote-only constraint.";
 
-  renderMap(currentMatches);
   renderMatchCards();
 };
 
@@ -421,10 +323,7 @@ const loadSession = async () => {
       await loadMatches();
     } else {
       discoverSection.hidden = true;
-      mapPanel.hidden = true;
       matchesList.innerHTML = "";
-      mapPins.innerHTML = "";
-      locationList.innerHTML = "";
       onboarding.hidden = false;
     }
     setStatus("Ready");
@@ -557,12 +456,6 @@ $("clear-chat").addEventListener("click", async () => {
   }
 });
 
-allLocationsButton.addEventListener("click", () => {
-  selectedLocation = null;
-  renderMatchCards();
-  updateLocationHighlights();
-});
-
 onboardingForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   onboardingError.textContent = "";
@@ -575,7 +468,7 @@ onboardingForm.addEventListener("submit", async (event) => {
     const data = await loadMatches(profile);
     fillProfile(data.profile);
     onboarding.hidden = true;
-    profileMessage.textContent = "Profile ready. Click a map pin to filter openings.";
+    profileMessage.textContent = "Profile ready. Your best matches are below.";
   } catch (error) {
     onboardingError.textContent = error.message;
   } finally {
